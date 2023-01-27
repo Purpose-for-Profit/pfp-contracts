@@ -2,7 +2,38 @@ nvm install 16
 npm install --global yarn
 
 yarn install --frozen-lockfile --no-progress
+python3.9 -m venv .venv
+source .venv/bin/activate
+pip3 install slither-analyzer
+
+# compile
+yarn compile
+
+# static analysis
+yarn lint
+yarn slither
+
+# tests
+yarn test-with-coverage
 
 # gas and size
 COINMARKETCAP_API_KEY=39109dce-d3d2-497d-83ea-bf5a89adcd10 REPORT_GAS=true yarn test
 yarn size
+
+
+# echidna tests
+rm -rR contracts/test/MockV3Aggregator.sol
+npx hardhat flatten > flattened.sol
+awk '/SPDX-License-Identifier/&&c++>0 {next} 1' flattened.sol > flattened-tmp.sol
+awk '/pragma solidity/&&c++>0 {next} 1' flattened-tmp.sol > flattened.sol
+
+docker run -it -v $(pwd):/root/src  ghcr.io/crytic/echidna/echidna:v2.0.2
+rm /usr/bin/solc
+pip3 install solc-select
+solc-select install 0.8.1
+solc-select use 0.8.1
+cd src
+
+echidna-test flattened.sol --contract EchidnaPFP --test-mode assertion --format text
+echidna-test flattened.sol --contract EchidnaGenesisPurposeEscrow --test-mode assertion --format text
+
