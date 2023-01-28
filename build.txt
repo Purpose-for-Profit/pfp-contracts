@@ -17,7 +17,7 @@ yarn slither
 yarn test-with-coverage
 
 # gas and size
-COINMARKETCAP_API_KEY=39109dce-d3d2-497d-83ea-bf5a89adcd10 REPORT_GAS=true yarn test
+COINMARKETCAP_API_KEY=xxx REPORT_GAS=true yarn test
 yarn size
 
 
