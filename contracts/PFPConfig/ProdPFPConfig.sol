@@ -26,8 +26,8 @@ import "./IPFPConfig.sol";
 
 contract ProdPFPConfig is IPFPConfig {
     /* solhint-disable const-name-snakecase */
-    address override public constant endowmentAddr = 0x0000000000000000000000000000000000000000;
-    address override public constant foundationAddr = 0x0000000000000000000000000000000000000000;
-    address override public constant roleManager = 0x0000000000000000000000000000000000000000;
+    address override public constant endowmentAddr = 0x354961ecDa3f3b0191fdA48fc90FFb908Db1005d;
+    address override public constant foundationAddr = 0x278C8BF12Ab81e1dAC2D771795EB29c66B1b7583;
+    address override public constant roleManager = 0xbfbF1dDd4344d85f7D76DE810b4bc69bAe915cC9;
     /* solhint-enable const-name-snakecase */
 }
