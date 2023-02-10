@@ -106,7 +106,8 @@ describe("PFP", function () {
         ZERO_ADDRESS,
         mockGenesisPurposeEscrow.address,
         fakeTestPFPConfig.address,
-        fakePriceConsumerV3.address
+        fakePriceConsumerV3.address,
+        0
       )
     ).to.be.revertedWith("PFP: zero address");
 
@@ -115,7 +116,8 @@ describe("PFP", function () {
         fakePurposeToken.address,
         ZERO_ADDRESS,
         fakeTestPFPConfig.address,
-        fakePriceConsumerV3.address
+        fakePriceConsumerV3.address,
+        0
       )
     ).to.be.revertedWith("PFP: zero address");
 
@@ -124,7 +126,8 @@ describe("PFP", function () {
         fakePurposeToken.address,
         mockGenesisPurposeEscrow.address,
         fakeTestPFPConfig.address,
-        ZERO_ADDRESS
+        ZERO_ADDRESS,
+        0
       )
     ).to.be.revertedWith("PFP: zero address");
 
@@ -132,7 +135,8 @@ describe("PFP", function () {
       fakePurposeToken.address,
       mockGenesisPurposeEscrow.address,
       fakeTestPFPConfig.address,
-      fakePriceConsumerV3.address
+      fakePriceConsumerV3.address,
+      0
     );
     await pfpContract.deployed();
 

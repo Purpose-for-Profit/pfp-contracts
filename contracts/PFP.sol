@@ -108,12 +108,14 @@ contract PFP is PFPAdmin {
      * @param _genesisPurposeEscrowAddr address of GenesisPurposeEscrow contract
      * @param _pfpConfigAddr address of IPFPConfig contract
      * @param _ethUsdPriceFeed address of PriceConsumerV3 contract
+     * @param _totalEndowmentContributionsInUsd ability to set endowment state on contract re-deployment
      */
     constructor(
         address _purposeTokenAddr,
         address _genesisPurposeEscrowAddr,
         address _pfpConfigAddr,
-        address _ethUsdPriceFeed
+        address _ethUsdPriceFeed,
+        uint256 _totalEndowmentContributionsInUsd
     ) PFPAdmin(_pfpConfigAddr) {
         require(_purposeTokenAddr != address(0), "PFP: zero address");
         require(_genesisPurposeEscrowAddr != address(0), "PFP: zero address");
@@ -123,7 +125,7 @@ contract PFP is PFPAdmin {
         genesisPurposeEscrow = GenesisPurposeEscrow(_genesisPurposeEscrowAddr);
         pfpConfig = IPFPConfig(_pfpConfigAddr);
         ethUsdPriceConsumer = PriceConsumerV3(_ethUsdPriceFeed);
-        totalEndowmentContributionsInUsd = 0;
+        totalEndowmentContributionsInUsd = _totalEndowmentContributionsInUsd;
     }
 
     /**

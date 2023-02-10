@@ -144,7 +144,8 @@ describe("PFP Protocol - Deposits", function () {
       purposeToken.address,
       genesisPurposeEscrow.address,
       mockTestPFPConfig.address,
-      ethUsdPriceConsumer.address
+      ethUsdPriceConsumer.address,
+      0
     );
     await pfp.deployed();
 
