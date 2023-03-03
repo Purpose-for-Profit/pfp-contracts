@@ -179,7 +179,7 @@ describe("PFP", function () {
         BigNumber.from(ethPrice * 10 ** CHAINLINK_USD_DECIMALS)
       );
 
-      // $1M in endowment, purpose price = 0.02
+      // $1M in endowment, purpose price = 0.06
       await pfpContract.setVariable(
         "totalEndowmentContributionsInUsd",
         BigNumber.from(10 ** 6).mul(10 ** PFP_USD_DECIMALS)
@@ -256,7 +256,7 @@ describe("PFP", function () {
             .mul(10 ** PFP_USD_DECIMALS)
             .add(endowmentContrib),
           endowmentContrib,
-          20000
+          60000
         );
     });
 
@@ -276,7 +276,7 @@ describe("PFP", function () {
     });
 
     it("should call mint purpose function", async () => {
-      // endowment has $1M, price = 2c
+      // endowment has $1M, price = 6c
       await pfpContract
         .connect(contributor)
         .depositEth(true, 0, { value: ethToWei(10) });
@@ -286,12 +286,12 @@ describe("PFP", function () {
       );
       expect(fakePurposeToken.mintPurpose).to.have.been.calledWith(
         mockGenesisPurposeEscrow.address,
-        BigNumber.from((10 * ethPrice) / 0.02).mul(purposeTokenDecimals)
+        BigNumber.from((10 * ethPrice) / 0.06).mul(purposeTokenDecimals)
       );
     });
 
     it("should call stake purpose function", async () => {
-      // endowment has $1M, price = 2c
+      // endowment has $1M, price = 6c
       await pfpContract
         .connect(contributor)
         .depositEth(false, 0, { value: ethToWei(2000) });
@@ -301,13 +301,13 @@ describe("PFP", function () {
       );
       expect(mockGenesisPurposeEscrow.stakePurpose).to.have.been.calledWith(
         contributor.address,
-        BigNumber.from((2000 * ethPrice) / 0.02).mul(purposeTokenDecimals),
+        BigNumber.from((2000 * ethPrice) / 0.06).mul(purposeTokenDecimals),
         false,
-        20000,
+        60000,
         "ETH"
       );
 
-      // endowment at $1M + $3M*85/100 = $3.55M, price = 0.0455c
+      // endowment at $1M + $3M*85/100 = $3.55M, price = 0.1875
 
       await pfpContract
         .connect(contributor)
@@ -320,9 +320,9 @@ describe("PFP", function () {
         BigNumber.from(10 * ethPrice)
           .mul(purposeTokenDecimals)
           .mul(10 ** 6)
-          .div(45500),
+          .div(187500),
         true,
-        45500,
+        187500,
         "ETH"
       );
     });
@@ -343,7 +343,7 @@ describe("PFP", function () {
         "ETH"
       );
 
-      // endowment = $12,750, price = 0.010127
+      // endowment = $12,750, price = 0.0106375
 
       // $1500 * 63.33 ETH => ~9,380,369
       await pfpContract
@@ -354,10 +354,10 @@ describe("PFP", function () {
         mockGenesisPurposeEscrow.stakePurpose.getCall(1).args[1]
       ).to.be.closeTo(
         purposeWithDecimals(BigNumber.from("9380369")),
-        BigNumber.from(10).pow(18)
+        BigNumber.from(10).pow(24)
       );
 
-      // endowment = $93,495.75, price = 0.010934
+      // endowment = $93,495.75, price = 0.0146747875
 
       // $1500 * 1000 ETH => ~137,186,756
       await pfpContract
@@ -367,11 +367,11 @@ describe("PFP", function () {
       expect(
         mockGenesisPurposeEscrow.stakePurpose.getCall(2).args[1]
       ).to.be.closeTo(
-        purposeWithDecimals(BigNumber.from("137186756")),
+        purposeWithDecimals(BigNumber.from("102221616")),
         BigNumber.from(10).pow(18)
       );
 
-      // endowment = $1,368,495.75, price = 0.023684
+      // endowment = $1,368,495.75, price = 0.0784247875
 
       // $1500 * 2 ETH => ~126,667
       await pfpContract
@@ -380,7 +380,7 @@ describe("PFP", function () {
       expect(
         mockGenesisPurposeEscrow.stakePurpose.getCall(3).args[1]
       ).to.be.closeTo(
-        purposeWithDecimals(BigNumber.from("126667")),
+        purposeWithDecimals(BigNumber.from("38253")),
         BigNumber.from(10).pow(18)
       );
     });
@@ -388,7 +388,7 @@ describe("PFP", function () {
     it("should override accelerated if acceleratedVestAllowed is false", async () => {
       await pfpContract.updateAcceleratedVestAllowed(false);
 
-      // endowment has $1M, price = 2c
+      // endowment has $1M, price = 6c
       await pfpContract
         .connect(contributor)
         .depositEth(false, 0, { value: ethToWei(2000) });
@@ -398,13 +398,13 @@ describe("PFP", function () {
       );
       expect(mockGenesisPurposeEscrow.stakePurpose).to.have.been.calledWith(
         contributor.address,
-        BigNumber.from((2000 * ethPrice) / 0.02).mul(purposeTokenDecimals),
+        BigNumber.from((2000 * ethPrice) / 0.06).mul(purposeTokenDecimals),
         false,
-        20000,
+        60000,
         "ETH"
       );
 
-      // endowment at $1M + $3M*85/100 = $3.55M, price = 0.0455c
+      // endowment at $1M + $3M*85/100 = $3.55M, price = 0.1875
 
       await pfpContract
         .connect(contributor)
@@ -417,9 +417,9 @@ describe("PFP", function () {
         BigNumber.from(10 * ethPrice)
           .mul(purposeTokenDecimals)
           .mul(10 ** 6)
-          .div(45500),
+          .div(187500),
         false,
-        45500,
+        187500,
         "ETH"
       );
     });
@@ -566,7 +566,7 @@ describe("PFP", function () {
         .connect(contributor)
         .approve(pfpContract.address, usdToUSDC(200 * 10 ** 6));
 
-      // $1M in endowment, purpose price = 0.02
+      // $1M in endowment, purpose price = 0.06
       await pfpContract.setVariable(
         "totalEndowmentContributionsInUsd",
         BigNumber.from(10 ** 6).mul(10 ** PFP_USD_DECIMALS)
@@ -635,7 +635,7 @@ describe("PFP", function () {
             .mul(10 ** PFP_USD_DECIMALS)
             .add(endowmentContrib),
           endowmentContrib,
-          20000
+          60000
         );
     });
 
@@ -656,7 +656,7 @@ describe("PFP", function () {
     });
 
     it("should call mint purpose function", async () => {
-      // endowment has $1M, price = 2c
+      // endowment has $1M, price = 6c
       await pfpContract
         .connect(contributor)
         .deposit(mockUSDCToken.address, usdToUSDC(15000), true, 0);
@@ -666,12 +666,12 @@ describe("PFP", function () {
       );
       expect(fakePurposeToken.mintPurpose).to.have.been.calledWith(
         mockGenesisPurposeEscrow.address,
-        BigNumber.from(15000 / 0.02).mul(purposeTokenDecimals)
+        BigNumber.from(15000 / 0.06).mul(purposeTokenDecimals)
       );
     });
 
     it("should call stake purpose function", async () => {
-      // endowment has $1M, price = 2c
+      // endowment has $1M, price = 6c
       await pfpContract
         .connect(contributor)
         .deposit(mockUSDCToken.address, usdToUSDC(3 * 10 ** 6), false, 0);
@@ -682,13 +682,13 @@ describe("PFP", function () {
       const usdcSymbol = await mockUSDCToken.symbol();
       expect(mockGenesisPurposeEscrow.stakePurpose).to.have.been.calledWith(
         contributor.address,
-        BigNumber.from((3 * 10 ** 6) / 0.02).mul(purposeTokenDecimals),
+        BigNumber.from((3 * 10 ** 6) / 0.06).mul(purposeTokenDecimals),
         false,
-        20000,
+        60000,
         usdcSymbol
       );
 
-      // endowment at $1M + $3M*85/100 = $3.55M, price = 0.0455c
+      // endowment at $1M + $3M*85/100 = $3.55M, price = 0.1875
 
       await pfpContract
         .connect(contributor)
@@ -701,9 +701,9 @@ describe("PFP", function () {
         BigNumber.from(15000)
           .mul(purposeTokenDecimals)
           .mul(10 ** 6)
-          .div(45500),
+          .div(187500),
         true,
-        45500,
+        187500,
         usdcSymbol
       );
     });
@@ -724,7 +724,7 @@ describe("PFP", function () {
         "USDC"
       );
 
-      // endowment = $12,750, price = 0.010127
+      // endowment = $12,750, price = 0.0106375
 
       // $1.5M => ~148,118,890
       await pfpContract
@@ -734,11 +734,11 @@ describe("PFP", function () {
       expect(
         mockGenesisPurposeEscrow.stakePurpose.getCall(1).args[1]
       ).to.be.closeTo(
-        purposeWithDecimals(BigNumber.from("148118890")),
+        purposeWithDecimals(BigNumber.from("141017204")),
         BigNumber.from(10).pow(18)
       );
 
-      // endowment = $1,287,750, price = 0.022877
+      // endowment = $1,287,750, price = 0.0743875
 
       // $50M => ~2,185,601,258
       await pfpContract
@@ -748,11 +748,11 @@ describe("PFP", function () {
       expect(
         mockGenesisPurposeEscrow.stakePurpose.getCall(2).args[1]
       ).to.be.closeTo(
-        purposeWithDecimals(BigNumber.from("2185601258")),
+        purposeWithDecimals(BigNumber.from("672160458")),
         BigNumber.from(10).pow(18)
       );
 
-      // endowment = $43,787,750, price = 0.447877
+      // endowment = $43,787,750, price = 2.1993875
 
       // $1500  => ~3,349
       await pfpContract
@@ -761,7 +761,7 @@ describe("PFP", function () {
       expect(
         mockGenesisPurposeEscrow.stakePurpose.getCall(3).args[1]
       ).to.be.closeTo(
-        purposeWithDecimals(BigNumber.from("3349")),
+        purposeWithDecimals(BigNumber.from("682")),
         BigNumber.from(10).pow(18)
       );
     });
@@ -862,15 +862,15 @@ describe("PFP", function () {
       );
       expect(mockGenesisPurposeEscrow.stakePurpose).to.have.been.calledWith(
         contributor.address,
-        BigNumber.from(minDeposit / 0.02).mul(purposeTokenDecimals),
+        BigNumber.from(minDeposit).mul(purposeTokenDecimals).mul(100).div(6),
         true,
-        20000,
+        60000,
         "USDC"
       );
     });
 
     it("should revert if the amount of purpose token received is less than the minimum specified", async () => {
-      // endowment has $1M, price = 2c
+      // endowment has $1M, price = 6c
       await expect(
         pfpContract
           .connect(contributor)
@@ -901,14 +901,14 @@ describe("PFP", function () {
       ).to.be.equal(BigNumber.from(10000));
     });
 
-    it("should increase by $0.01 every $1M", async () => {
+    it("should increase by $0.05 every $1M", async () => {
       await pfpContract.setVariable(
         "totalEndowmentContributionsInUsd",
         BigNumber.from(10 ** 6).mul(10 ** PFP_USD_DECIMALS)
       );
       expect(
         await pfpContract.connect(contributor).getPurposePrice()
-      ).to.be.equal(BigNumber.from(20000));
+      ).to.be.equal(BigNumber.from(60000));
 
       await pfpContract.setVariable(
         "totalEndowmentContributionsInUsd",
@@ -916,7 +916,7 @@ describe("PFP", function () {
       );
       expect(
         await pfpContract.connect(contributor).getPurposePrice()
-      ).to.be.equal(BigNumber.from(520000));
+      ).to.be.equal(BigNumber.from(2560000));
 
       await pfpContract.setVariable(
         "totalEndowmentContributionsInUsd",
@@ -924,7 +924,7 @@ describe("PFP", function () {
       );
       expect(
         await pfpContract.connect(contributor).getPurposePrice()
-      ).to.be.equal(BigNumber.from(780000));
+      ).to.be.equal(BigNumber.from(3860000));
 
       await pfpContract.setVariable(
         "totalEndowmentContributionsInUsd",
@@ -932,7 +932,7 @@ describe("PFP", function () {
       );
       expect(
         await pfpContract.connect(contributor).getPurposePrice()
-      ).to.be.equal(BigNumber.from(100010000));
+      ).to.be.equal(BigNumber.from(500010000));
     });
 
     it("should follow line equation increase", async () => {
@@ -942,7 +942,7 @@ describe("PFP", function () {
       );
       expect(
         await pfpContract.connect(contributor).getPurposePrice()
-      ).to.be.equal(BigNumber.from(210220));
+      ).to.be.equal(BigNumber.from(1011102));
 
       await pfpContract.setVariable(
         "totalEndowmentContributionsInUsd",
@@ -950,26 +950,26 @@ describe("PFP", function () {
       );
       expect(
         await pfpContract.connect(contributor).getPurposePrice()
-      ).to.be.equal(BigNumber.from(937237));
+      ).to.be.equal(BigNumber.from(4646189));
     });
 
-    it("should be $1.01 if contributions are $100M", async () => {
+    it("should be $5.01 if contributions are $100M", async () => {
       await pfpContract.setVariable(
         "totalEndowmentContributionsInUsd",
         BigNumber.from(100 * 10 ** 6).mul(10 ** PFP_USD_DECIMALS)
       );
       expect(await pfpContract.connect(contributor).getPurposePrice()).to.be.eq(
-        BigNumber.from(1010000)
+        BigNumber.from(5010000)
       );
     });
 
-    it("should be $10.01 if contributions are $1B", async () => {
+    it("should be $50.01 if contributions are $1B", async () => {
       await pfpContract.setVariable(
         "totalEndowmentContributionsInUsd",
         BigNumber.from(10 ** 9).mul(10 ** PFP_USD_DECIMALS)
       );
       expect(await pfpContract.connect(contributor).getPurposePrice()).to.be.eq(
-        BigNumber.from(10010000)
+        BigNumber.from(50010000)
       );
     });
   });
