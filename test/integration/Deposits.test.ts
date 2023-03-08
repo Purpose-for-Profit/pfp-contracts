@@ -251,7 +251,7 @@ describe("PFP Protocol - Deposits", function () {
         86400 * 2
       );
       //    check purpose price with $850k in treasury
-      expect(await pfp.getPurposePrice()).to.eq(18500);
+      expect(await pfp.getPurposePrice()).to.eq(52500);
 
       // deposit small amount ($2000 at $0.0185)
       expect(
@@ -260,7 +260,7 @@ describe("PFP Protocol - Deposits", function () {
           .depositEth(false, 0, { value: ethToWei(1) })
       );
       //    check balances
-      const smallDep = BigNumber.from("108108108108108108108108");
+      const smallDep = BigNumber.from("38095238095238095238095");
       expect(await purposeToken.balanceOf(contributor2.address)).to.equal(0);
       expect(await purposeToken.balanceOf(genesisPurposeEscrow.address)).to.eq(
         largeDep.add(smallDep)
