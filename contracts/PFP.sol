@@ -250,7 +250,7 @@ contract PFP is PFPAdmin {
         view
         returns (uint256 purposePrice)
     {
-                // present price equation as y = mx+c with y as price ($) and x as endowment ($M)
+        // present price equation as y = mx+c with y as price ($) and x as endowment ($M)
         //    2 points on line: ($2M, $0.11) and ($1M, $0.06); y intercept at $0.01
         //    add 6 decimals to price and endowment
         //      m = (0.11*10^6 - 0.06*10^6) / (2M*10^6 - 1M*10^6) = 5 * 10^4 / 10^12 = 5/10^8;
