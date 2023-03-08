@@ -420,7 +420,7 @@ describe("PFP Protocol - Withdrawals and Rewards", function () {
         transaction.currentAmount.add(transaction.currentReward)
       ).to.be.closeTo(
         BigNumber.from("180000000000000000000000"),
-        BigNumber.from(10).pow(18)
+        BigNumber.from(10).pow(20)
       );
 
       // 6. 1.5 years after minting, Contributor A second vest should be available
@@ -761,7 +761,7 @@ describe("PFP Protocol - Withdrawals and Rewards", function () {
         purposeWithDecimals(
           BigNumber.from(remainingReward + 110000 + 144360 + 182000)
         ),
-        BigNumber.from(10).pow(21)
+        BigNumber.from(10).pow(22)
       );
 
       // Unavailable Index
