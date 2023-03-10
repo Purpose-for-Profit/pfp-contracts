@@ -926,7 +926,7 @@ describe("GenesisPurposeEscrow", function () {
         await escrowContract.calcWithdrawableAmount(
           contributor2.address,
           0,
-          now + 86400 * 516
+          now + 86400 * 510
         )
       ).to.eq(secondTranche.add(thirdTranche));
 
@@ -946,7 +946,7 @@ describe("GenesisPurposeEscrow", function () {
         await escrowContract.calcWithdrawableAmount(
           contributor2.address,
           0,
-          now + 86400 * 516
+          now + 86400 * 510
         )
       ).to.eq(secondTranche.div(2).add(thirdTranche));
     });

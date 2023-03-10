@@ -60,7 +60,8 @@ contract EchidnaPFP {
             address(purpose),
             address(genesis),
             address(config),
-            address(oracle)
+            address(oracle),
+            0
         );
         pfp.grantRole(pfp.ADMIN_ROLE(), address(this));
         pfp.addCoinAddr(address(stable));

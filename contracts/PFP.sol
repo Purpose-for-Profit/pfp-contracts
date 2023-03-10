@@ -108,12 +108,14 @@ contract PFP is PFPAdmin {
      * @param _genesisPurposeEscrowAddr address of GenesisPurposeEscrow contract
      * @param _pfpConfigAddr address of IPFPConfig contract
      * @param _ethUsdPriceFeed address of PriceConsumerV3 contract
+     * @param _totalEndowmentContributionsInUsd ability to set endowment state on contract re-deployment
      */
     constructor(
         address _purposeTokenAddr,
         address _genesisPurposeEscrowAddr,
         address _pfpConfigAddr,
-        address _ethUsdPriceFeed
+        address _ethUsdPriceFeed,
+        uint256 _totalEndowmentContributionsInUsd
     ) PFPAdmin(_pfpConfigAddr) {
         require(_purposeTokenAddr != address(0), "PFP: zero address");
         require(_genesisPurposeEscrowAddr != address(0), "PFP: zero address");
@@ -123,7 +125,7 @@ contract PFP is PFPAdmin {
         genesisPurposeEscrow = GenesisPurposeEscrow(_genesisPurposeEscrowAddr);
         pfpConfig = IPFPConfig(_pfpConfigAddr);
         ethUsdPriceConsumer = PriceConsumerV3(_ethUsdPriceFeed);
-        totalEndowmentContributionsInUsd = 0;
+        totalEndowmentContributionsInUsd = _totalEndowmentContributionsInUsd;
     }
 
     /**
@@ -249,14 +251,14 @@ contract PFP is PFPAdmin {
         returns (uint256 purposePrice)
     {
         // present price equation as y = mx+c with y as price ($) and x as endowment ($M)
-        //    2 points on line: ($2M, $0.03) and ($1M, $0.02); y intercept at $0.01
+        //    2 points on line: ($2M, $0.11) and ($1M, $0.06); y intercept at $0.01
         //    add 6 decimals to price and endowment
-        //      m = (0.03*10^6 - 0.02*10^6) / (2M*10^6 - 1M*10^6) = 10^4 / 10^12 = 1/10^8;
-        //      c = 0.01^10^6;
-        //      y = x/10^8 + 10^4
+        //      m = (0.11*10^6 - 0.06*10^6) / (2M*10^6 - 1M*10^6) = 5 * 10^4 / 10^12 = 5/10^8;
+        //      c = 0.01*10^6 = 10^4
+        //      y = 5*x/10^8 + 10^4
         //    and multiply terms with denominator to perform division last
-        //      y = (x + 10^12) / 10^8;
-        purposePrice = (totalEndowmentContributionsInUsd + 1e12)/1e8;
+        //      y = (5*x + 10^12) / 10^8;
+        purposePrice = (5 * totalEndowmentContributionsInUsd + 1e12)/1e8;
     }
 
     /**

@@ -152,7 +152,8 @@ describe("PFP Bonding Curve", function () {
       purposeToken.address,
       genesisPurposeEscrow.address,
       mockTestPFPConfig.address,
-      ethUsdPriceConsumer.address
+      ethUsdPriceConsumer.address,
+      0
     );
     await pfp.deployed();
 
@@ -190,7 +191,7 @@ describe("PFP Bonding Curve", function () {
         .approve(pfp.address, usdToDAI(BigNumber.from(10 * 10 ** 6)));
     });
 
-    it("purpose price should increase by 1c/$1M", async () => {
+    it("purpose price should increase by 5c/$1M", async () => {
       const endowmentAddr = await mockTestPFPConfig.endowmentAddr();
       const foundationAddr = await mockTestPFPConfig.foundationAddr();
 
@@ -214,13 +215,13 @@ describe("PFP Bonding Curve", function () {
       // $10M @0.0355 = 281,690,140 tokens; treasury = $11,050,000
       let totalPurpose = await purposeToken.totalSupply();
       expect(totalPurpose).to.be.closeTo(
-        purposeWithDecimals(BigNumber.from("518727177")),
+        purposeWithDecimals(BigNumber.from("283253588")),
         BigNumber.from(10).pow(18)
       );
       expect(
         await purposeToken.balanceOf(genesisPurposeEscrow.address)
       ).to.equal(totalPurpose);
-      expect(await pfp.getPurposePrice()).to.be.eq(BigNumber.from("120500"));
+      expect(await pfp.getPurposePrice()).to.be.eq(BigNumber.from("562500"));
 
       // deposits: $70M usdc, $10M eth, $7M dai,
       await pfp
@@ -247,13 +248,13 @@ describe("PFP Bonding Curve", function () {
       // $7M @0.8005 = 8,744,534 tokens; treasury = $85,000,000
       totalPurpose = await purposeToken.totalSupply();
       expect(totalPurpose).to.be.closeTo(
-        purposeWithDecimals(BigNumber.from("1122360814")),
+        purposeWithDecimals(BigNumber.from("412291449")),
         BigNumber.from(10).pow(20)
       );
       expect(
         await purposeToken.balanceOf(genesisPurposeEscrow.address)
       ).to.equal(totalPurpose);
-      expect(await pfp.getPurposePrice()).to.be.eq(BigNumber.from("860000"));
+      expect(await pfp.getPurposePrice()).to.be.eq(BigNumber.from("4260000"));
 
       // check balances
       expect(await mockUSDC.balanceOf(endowmentAddr)).to.eq(

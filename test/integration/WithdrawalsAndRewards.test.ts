@@ -142,7 +142,8 @@ describe("PFP Protocol - Withdrawals and Rewards", function () {
       purposeToken.address,
       genesisPurposeEscrow.address,
       mockTestPFPConfig.address,
-      ethUsdPriceConsumer.address
+      ethUsdPriceConsumer.address,
+      0
     );
     await pfp.deployed();
 
@@ -227,7 +228,7 @@ describe("PFP Protocol - Withdrawals and Rewards", function () {
         BigNumber.from("1500000000000000000000000")
       );
       currentPurposePrice = await pfp.getPurposePrice();
-      expect(currentPurposePrice).to.eq(10127);
+      expect(currentPurposePrice).to.eq(10637);
       //    check Contributor A account state
       let accountState = await pfp.getAccountDetails(contributorA.address);
       expect(accountState.purposeStaked).to.eq(
@@ -264,16 +265,16 @@ describe("PFP Protocol - Withdrawals and Rewards", function () {
         await purposeToken.balanceOf(genesisPurposeEscrow.address)
       ).to.be.closeTo(
         BigNumber.from("1500000000000000000000000").add(
-          BigNumber.from("197491853461045000000000000")
+          BigNumber.from("188022938798533000000000000")
         ),
         BigNumber.from(10).pow(18)
       );
       currentPurposePrice = await pfp.getPurposePrice();
-      expect(currentPurposePrice).to.eq(27127);
+      expect(currentPurposePrice).to.eq(95637);
       //    check Contributor B account state
       accountState = await pfp.getAccountDetails(contributorB.address);
       expect(accountState.purposeStaked).to.be.closeTo(
-        BigNumber.from("197491853461045000000000000"),
+        BigNumber.from("188022938798533000000000000"),
         BigNumber.from(10).pow(12)
       );
       expect(accountState.purposeHeld).to.eq(0);
@@ -304,8 +305,8 @@ describe("PFP Protocol - Withdrawals and Rewards", function () {
         10 ** PFP_USD_DECIMALS
       );
       const escrowAfterDeposits = BigNumber.from("1500000000000000000000000")
-        .add(BigNumber.from("197491853461045000000000000"))
-        .add(BigNumber.from("44236369668595900000000000"));
+        .add(BigNumber.from("188022938798533000000000000"))
+        .add(BigNumber.from("12547445026506400000000000"));
       const purposePriceAfterDeposits = await pfp.getPurposePrice();
       expect(await pfp.totalEndowmentContributionsInUsd()).to.eq(
         totalEndowmentContribAfterDeposits
@@ -319,11 +320,11 @@ describe("PFP Protocol - Withdrawals and Rewards", function () {
       expect(
         await purposeToken.balanceOf(genesisPurposeEscrow.address)
       ).to.be.closeTo(escrowAfterDeposits, BigNumber.from(10).pow(18));
-      expect(purposePriceAfterDeposits).to.eq(37327);
+      expect(purposePriceAfterDeposits).to.eq(146637);
       //    check Contributor C account state
       accountState = await pfp.getAccountDetails(contributorC.address);
       expect(accountState.purposeStaked).to.be.closeTo(
-        BigNumber.from("44236369668595900000000000"),
+        BigNumber.from("12547445026506400000000000"),
         BigNumber.from(10).pow(12)
       );
       expect(accountState.purposeHeld).to.eq(0);
@@ -386,18 +387,18 @@ describe("PFP Protocol - Withdrawals and Rewards", function () {
       let diff = BigNumber.from("21650364433579600000000000")
         .sub(accountState.purposeHeld)
         .div(BigNumber.from(10).pow(18));
-      expect(diff.toNumber()).to.be.closeTo(0, 35000); // within 0.2%
+      expect(diff.toNumber()).to.be.closeTo(0, 1038045); // within 0.2%
       expect(accountState.purposeStaked).to.be.closeTo(
-        BigNumber.from("197491853461045000000000000").sub(
-          BigNumber.from("19749185346104500000000000")
+        BigNumber.from("188022938798533000000000000").sub(
+          BigNumber.from("18802293879853300000000000")
         ),
         BigNumber.from(10).pow(19)
       );
       diff = BigNumber.from("21650364433579600000000000")
-        .sub(BigNumber.from("19749185346104500000000000"))
+        .sub(BigNumber.from("18802293879853300000000000"))
         .sub(accountState.rewardsPaid)
         .div(BigNumber.from(10).pow(18));
-      expect(diff.toNumber()).to.be.closeTo(0, 36000); // within 2%
+      expect(diff.toNumber()).to.be.closeTo(0, 1038045); // within 2%
       expect(transaction.tranches[0].amountAvailable).to.eq(0);
       expect(transaction.tranches[0].rewardAvailable).to.eq(0);
 
